@@ -1,7 +1,14 @@
-import React from "react"
+import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 
-const AppContainer = () => {
+import { run } from "utils/run"
+
+const App = () => {
+  useEffect(() => {
+    (window as any).run = run
+    run().then(console.log).catch(console.error)
+  })
+
   return (
     <h1>
       Hello World
@@ -9,4 +16,4 @@ const AppContainer = () => {
   )
 }
 
-ReactDOM.render(<AppContainer />, document.getElementById("root"))
+ReactDOM.render(<App />, document.getElementById("root"))
