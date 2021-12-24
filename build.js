@@ -5,6 +5,8 @@ const server = require("live-server")
 const fs = require('fs-extra')
 const glob = require('glob')
 
+const env = require("dotenv").config()
+
 // remove old dist dir
 fs.removeSync("./dist")
 
@@ -20,6 +22,10 @@ esbuild.build({
   bundle: true,
   minify: false,
   sourcemap: "inline",
+
+  define: {
+    "window.env": JSON.stringify(process.env)
+  },
 
   plugins: [
     alias({
@@ -61,6 +67,6 @@ esbuild.build({
 
 
 // copy static files
-for (const path of glob.sync("@(src|public)/**/*.!(js|ts|jsx|tsx)")) {
+for (const path of glob.sync("@(src|public)/**/*.!(js|ts|jsx|tsx|d.ts)")) {
   fs.copySync(`./${path}`, path.replace(/(^src\/pages|^src|^public)\//gm, "./dist/"))
 }
